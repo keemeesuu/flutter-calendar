@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
 class Diary {
-  DateTime time;
+  DateTime createdAt;
   String text;
 
   Diary({
-    required this.time,
+    required this.createdAt,
     required this.text,
   });
 }
 
 class DiaryService {
   /// Diary 목록
+  List<Diary> diaryList = [];
 }
 
 // 현재 날짜
