@@ -52,6 +52,7 @@ class _HomePageState extends State<HomePage> {
           // the time-part of compared DateTime objects.
           // 대략 캘린더 리스트 에서 선택한 날짜와 비교해 맞으면 true 해주는 기능.
           // argument a와 b를 비교해 맞으면 true 반환.
+          print(_selectedDay);
           return isSameDay(_selectedDay, day);
         },
         onDaySelected: (selectedDay, focusedDay) {

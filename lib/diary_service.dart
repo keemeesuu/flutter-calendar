@@ -12,7 +12,11 @@ class Diary {
 
 class DiaryService {
   /// Diary 목록
-  List<Diary> diaryList = [];
+  List<Diary> diaryList = [
+    Diary(createdAt: DateTime.now(), text: "dummy1"),
+    Diary(createdAt: DateTime.now(), text: "dummy2"),
+    // Dummy Data
+  ];
 }
 
 // 현재 날짜
