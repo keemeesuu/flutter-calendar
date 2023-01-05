@@ -16,7 +16,7 @@ class DiaryService extends ChangeNotifier {
   List<Diary> diaryList = [
     Diary(createdAt: DateTime.now(), text: "dummy1"),
     Diary(createdAt: DateTime.now(), text: "dummy2"),
-    Diary(createdAt: DateTime(2023, 01, 05), text: "dummy2"),
+    Diary(createdAt: DateTime(2023, 01, 03), text: "dummy2"),
     // Dummy Data
   ];
 
@@ -26,6 +26,47 @@ class DiaryService extends ChangeNotifier {
     return diaryList
         .where((diary) => isSameDay(date, diary.createdAt))
         .toList();
+  }
+
+  /// 글 수정을 위해 선택시 해당 날짜 diary 글 조회
+  List getByDateDetail(DateTime date) {
+    // return diaryList.where((diary) => diaryList. == diary.createdAt);
+
+    final dateDetail =
+        diaryList.where((diary) => diary.createdAt == date).toList();
+
+    // print("${dateDetail[0].createdAt}, ${dateDetail[0].text}");
+
+    return [dateDetail[0].createdAt, dateDetail[0].text];
+  }
+
+  void create(String text, DateTime selectedDate) {
+    DateTime now = DateTime.now();
+
+    // 선택된 날짜(selectedDate)에 현재 시간으로 추가
+    DateTime createAt = DateTime(
+      selectedDate.year,
+      selectedDate.month,
+      selectedDate.day,
+      now.hour,
+      now.minute,
+      now.second,
+    );
+
+    Diary diary = Diary(
+      createdAt: createAt,
+      text: text,
+    );
+    diaryList.add(diary);
+    notifyListeners();
+  }
+
+  void update(String text, DateTime selectedDate) {
+    // List date = getByDateDetail(selectedDate);
+
+    diaryList[diaryList.indexWhere((item) => item.createdAt == selectedDate)]
+        .text = text;
+    notifyListeners();
   }
 }
 
