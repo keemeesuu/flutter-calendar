@@ -28,7 +28,7 @@ class DiaryService extends ChangeNotifier {
         .toList();
   }
 
-  /// 글 수정을 위해 선택시 해당 날짜 diary 글 조회
+  /// diary 글 조회하기
   List getByDateDetail(DateTime date) {
     // return diaryList.where((diary) => diaryList. == diary.createdAt);
 
@@ -40,11 +40,11 @@ class DiaryService extends ChangeNotifier {
     return [dateDetail[0].createdAt, dateDetail[0].text];
   }
 
-  void create(String text, DateTime selectedDate) {
+  void create(DateTime selectedDate, String text) {
     DateTime now = DateTime.now();
 
     // 선택된 날짜(selectedDate)에 현재 시간으로 추가
-    DateTime createAt = DateTime(
+    DateTime createdAt = DateTime(
       selectedDate.year,
       selectedDate.month,
       selectedDate.day,
@@ -54,19 +54,26 @@ class DiaryService extends ChangeNotifier {
     );
 
     Diary diary = Diary(
-      createdAt: createAt,
+      createdAt: createdAt,
       text: text,
     );
     diaryList.add(diary);
     notifyListeners();
   }
 
-  void update(String text, DateTime selectedDate) {
-    // List date = getByDateDetail(selectedDate);
+  void update(DateTime createdAt, String newContent) {
+    // createdAt을 고유식별자로 사용.
 
-    diaryList[diaryList.indexWhere((item) => item.createdAt == selectedDate)]
-        .text = text;
+    diaryList[diaryList.indexWhere((item) => item.createdAt == createdAt)]
+        .text = newContent;
     notifyListeners();
+  }
+
+  void delete(DateTime createdAt) {
+    // createdAt을 고유식별자로 사용해 글 데이터를 삭제한다.
+
+    diaryList
+        .removeAt(diaryList.indexWhere((item) => item.createdAt == createdAt));
   }
 }
 

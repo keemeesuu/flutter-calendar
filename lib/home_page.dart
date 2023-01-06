@@ -121,38 +121,36 @@ class _HomePageState extends State<HomePage> {
 
                             /// Update Button
                             onTap: () {
+                              // 텍스트 불러오기
                               List diaryDetail =
                                   diaryService.getByDateDetail(diary.createdAt);
                               updateTextController.text = diaryDetail[1];
-
                               final ogDate = diaryDetail[0];
 
-                              print(ogDate);
+                              showUpdateDialog(context, diaryService, ogDate);
+                            },
 
+                            /// Delete Button
+                            onLongPress: () {
                               showDialog(
                                 context: context,
                                 builder: (context) {
                                   return AlertDialog(
-                                    title: Text("일기 수정"),
-                                    content: TextField(
-                                      autofocus: true,
-                                      controller: updateTextController,
-                                      decoration: InputDecoration(),
-                                      onSubmitted: (value) {
-                                        diaryService.update(
-                                          updateTextController.text,
-                                          ogDate,
-                                        );
-                                        Navigator.pop(context);
-                                      },
-                                    ),
+                                    title: Text("삭제 하시겠습니까?"),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {},
+                                        child: Text("취소"),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {},
+                                        child: Text("삭제"),
+                                      ),
+                                    ],
                                   );
                                 },
                               );
                             },
-
-                            /// Delete Button
-                            onLongPress: () {},
                           );
                         },
                         separatorBuilder: (context, index) {
@@ -174,6 +172,57 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  /// Diary 수정 다이얼로그 보여주기
+  Future<dynamic> showUpdateDialog(
+      BuildContext context, DiaryService diaryService, ogDate) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("일기 수정"),
+          content: TextField(
+            autofocus: true,
+            controller: updateTextController,
+            decoration: InputDecoration(),
+            onSubmitted: (value) {
+              diaryService.update(
+                ogDate,
+                updateTextController.text,
+              );
+              Navigator.pop(context);
+            },
+          ),
+          actions: [
+            /// 취소 버튼
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                "취소",
+                style: TextStyle(color: Colors.indigo),
+              ),
+            ),
+
+            /// 작성 버튼
+            TextButton(
+              onPressed: () {
+                diaryService.update(
+                  ogDate,
+                  updateTextController.text,
+                );
+                Navigator.pop(context);
+              },
+              child: Text(
+                "확인",
+                style: TextStyle(color: Colors.indigo),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// Diary 작성 다이얼로그 보여주기
   Future<dynamic> showCreateDialog(
       BuildContext context, DiaryService diaryService) {
     return showDialog(
@@ -228,7 +277,7 @@ class _HomePageState extends State<HomePage> {
     // 앞뒤 공백 삭제
     String newText = createTextController.text.trim();
     if (newText.isNotEmpty) {
-      diaryService.create(newText, selectedDay);
+      diaryService.create(selectedDay, newText);
       createTextController.text = "";
     }
   }
