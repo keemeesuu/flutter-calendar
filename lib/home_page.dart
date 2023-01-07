@@ -139,11 +139,16 @@ class _HomePageState extends State<HomePage> {
                                     title: Text("삭제 하시겠습니까?"),
                                     actions: [
                                       TextButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
                                         child: Text("취소"),
                                       ),
                                       TextButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          diaryService.delete(diary.createdAt);
+                                          Navigator.pop(context);
+                                        },
                                         child: Text("삭제"),
                                       ),
                                     ],

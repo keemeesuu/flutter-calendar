@@ -14,13 +14,13 @@ class Diary {
 class DiaryService extends ChangeNotifier {
   /// Diary 목록
   List<Diary> diaryList = [
+    // Dummy Data
     Diary(createdAt: DateTime.now(), text: "dummy1"),
     Diary(createdAt: DateTime.now(), text: "dummy2"),
     Diary(createdAt: DateTime(2023, 01, 03), text: "dummy2"),
-    // Dummy Data
   ];
 
-  /// 특정 날짜의 diary 조회
+  /// 특정 날짜의 diary 들 조회
   List<Diary> getByDate(DateTime date) {
     // diaryList 메소드 에서 date의 값과 같은 날만 return
     return diaryList
@@ -28,7 +28,7 @@ class DiaryService extends ChangeNotifier {
         .toList();
   }
 
-  /// diary 글 조회하기
+  /// 특정 날짜의 글 가져오기
   List getByDateDetail(DateTime date) {
     // return diaryList.where((diary) => diaryList. == diary.createdAt);
 
@@ -40,6 +40,7 @@ class DiaryService extends ChangeNotifier {
     return [dateDetail[0].createdAt, dateDetail[0].text];
   }
 
+  /// Diary 작성
   void create(DateTime selectedDate, String text) {
     DateTime now = DateTime.now();
 
@@ -61,19 +62,20 @@ class DiaryService extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Diary 수정
   void update(DateTime createdAt, String newContent) {
     // createdAt을 고유식별자로 사용.
-
     diaryList[diaryList.indexWhere((item) => item.createdAt == createdAt)]
         .text = newContent;
     notifyListeners();
   }
 
+  /// Diary 삭제
   void delete(DateTime createdAt) {
     // createdAt을 고유식별자로 사용해 글 데이터를 삭제한다.
-
     diaryList
         .removeAt(diaryList.indexWhere((item) => item.createdAt == createdAt));
+    notifyListeners();
   }
 }
 
